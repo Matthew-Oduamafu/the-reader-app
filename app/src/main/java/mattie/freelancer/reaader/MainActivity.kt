@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+// https://github.com/Matthew-Oduamafu/reader-app
 
 @Composable
 fun Greeting(name: String) {

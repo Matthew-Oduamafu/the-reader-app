@@ -1,6 +1,9 @@
 buildscript {
     ext {
         compose_version = '1.2.0-beta03'
+
+        hilt_version = '2.39'
+        room_version = '2.4.2'
     }
     // for firebase to work
     repositories {
@@ -11,8 +14,10 @@ buildscript {
     // also for firebase
     dependencies {
         // Add this line
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.10' // for firebase
 
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"  // for kotlin
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.1' // for hilt
     }
 }
 
