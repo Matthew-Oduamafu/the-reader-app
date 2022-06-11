@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
+import mattie.freelancer.reaader.navigation.ReaderNavigation
 import mattie.freelancer.reaader.ui.theme.ReaaderTheme
 
 private const val TAG = "MainActivity"
@@ -24,6 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ReaaderTheme {
+                /*
                 val db = FirebaseFirestore.getInstance()
                 val user: MutableMap<String, Any> = HashMap()
                 user["fName"] = "Mattie"
@@ -36,28 +40,35 @@ class MainActivity : ComponentActivity() {
                         Log.d(TAG, "onCreate: users:: $it failed to save")
                     }
                 }
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                */
+
+                // calling the reader app
+                ReaderApp()  // this serves as the parent to all the composable
             }
         }
     }
 }
-// https://github.com/Matthew-Oduamafu/reader-app
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun ReaderApp() {
+    // A surface container using the 'background' color from the theme
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ReaderNavigation()
+        }
+    }
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ReaaderTheme {
-        Greeting("Android")
     }
 }
