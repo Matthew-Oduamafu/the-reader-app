@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015606880597",
+    "project_id": "reader-8bd40",
+    "storage_bucket": "reader-8bd40.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015606880597:android:51108c219d5e005b9b27dc",
+        "android_client_info": {
+          "package_name": "mattie.freelancer.reaader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015606880597-t91prp804otlfq8u0ev53cofv8fpmqnq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuZunpEG2n0adL2RSpI64RzATbTOCAs6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015606880597-t91prp804otlfq8u0ev53cofv8fpmqnq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
