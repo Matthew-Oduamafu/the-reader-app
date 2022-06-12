@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Reaader</string>
+    <string name="emailLabelId">Email</string>
+    <string name="passwordLabelId">Password</string>
+    <string name="signup_label">Sign Up</string>
+    <string name="signin_label">Login</string>
+    <string name="new_user_label">New User? </string>
+    <string name="create_account_msg">Please enter a valid email and password that is at least 6 characters</string>
+    <string name="have_account_label">Have Account Already?</string>
 </resources>

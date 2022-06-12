@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
+import mattie.freelancer.reaader.components.ReaderLogo
 import mattie.freelancer.reaader.navigation.ReaderScreens
 
 private const val TAG = "ReaderSplashScreen"
@@ -66,11 +67,7 @@ fun ReaderSplashScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "A. Reader",
-                style = MaterialTheme.typography.h3,
-                color = Color.Red.copy(.5f)
-            )
+            ReaderLogo()  // this comes from components package
 
             Spacer(modifier = Modifier.height(15.dp))
 
