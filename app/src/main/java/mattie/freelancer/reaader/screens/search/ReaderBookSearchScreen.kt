@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import mattie.freelancer.reaader.R
@@ -37,8 +38,14 @@ private const val TAG = "ReaderBookSearchScreen"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ReaderBookSearchScreen(navController: NavHostController) {
+fun ReaderBookSearchScreen(
+    navController: NavHostController,
+    searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+) {
     Log.d(TAG, "ReaderBookSearchScreen: called")
+    Log.d(TAG, "ReaderBookSearchScreen: testing the viewModel")
+    searchScreenViewModel.getBooks("Android")
+
     Scaffold(
         topBar = {
             ReaderAppBar(
@@ -114,7 +121,10 @@ fun BookRow(book: MBook, navController: NavHostController) {
             Image(
                 painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = stringResource(id = R.string.book_cover_image_description),
-                modifier = Modifier.width(80.dp).fillMaxHeight().padding(end = 4.dp)
+                modifier = Modifier
+                    .width(80.dp)
+                    .fillMaxHeight()
+                    .padding(end = 4.dp)
             )
             Column {
                 Text(text = book.title.toString(), overflow = TextOverflow.Ellipsis)
