@@ -44,12 +44,29 @@ fun ReaderSplashScreen(navController: NavHostController) {
                 }
             )
         )
-        delay(5000L)
+        delay(3500L)
         navController.also {
             it.popBackStack()
             Log.d(TAG, "ReaderSplashScreen: splash screen pop out of stack")
             it.navigate(ReaderScreens.LOGIN_SCREEN.name)
         }
+        /*
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
+            Log.d(TAG, "ReaderSplashScreen: send user to login screen")
+            navController.also {
+                it.popBackStack()
+                Log.d(TAG, "ReaderSplashScreen: splash screen pop out of stack")
+                it.navigate(ReaderScreens.LOGIN_SCREEN.name)
+            }
+        } else {
+            Log.d(TAG, "ReaderSplashScreen: send user straight to home page since user already in")
+            navController.also {
+                it.popBackStack()
+                Log.d(TAG, "ReaderSplashScreen: splash screen pop out of stack")
+                it.navigate(ReaderScreens.READER_HOME_SCREEN.name)
+            }
+        }
+        */
     }
     )
 

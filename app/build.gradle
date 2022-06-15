@@ -89,7 +89,7 @@ dependencies {
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     //material icons - use with caution!
-    // implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
@@ -109,7 +109,7 @@ dependencies {
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 
-    // JSON Converter
+    // JSON Converter (Gson)
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //Room

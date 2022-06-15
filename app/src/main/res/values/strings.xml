@@ -7,4 +7,8 @@
     <string name="new_user_label">New User? </string>
     <string name="create_account_msg">Please enter a valid email and password that is at least 6 characters</string>
     <string name="have_account_label">Have Account Already?</string>
+    <string name="reading_activity_label">Your reading \n activity right now…</string>
+    <string name="search_screen_title">Search Books</string>
+    <string name="search_hint">Search</string>
+    <string name="book_cover_image_description">Book cover Image</string>
 </resources>

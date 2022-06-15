@@ -22,16 +22,21 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import mattie.freelancer.reaader.R
 import mattie.freelancer.reaader.components.EmailInput
 import mattie.freelancer.reaader.components.PasswordInputField
 import mattie.freelancer.reaader.components.ReaderLogo
+import mattie.freelancer.reaader.navigation.ReaderScreens
 
 private const val TAG = "ReaderLoginScreen"
 
 @Composable
-fun ReaderLoginScreen(navController: NavHostController) {
+fun ReaderLoginScreen(
+    navController: NavHostController,
+    loginScreenViewModel: LoginScreenViewModel = viewModel()
+) {
     Log.d(TAG, "ReaderLoginScreen: called")
 
     val showLonginForm = rememberSaveable { mutableStateOf(true) }
@@ -57,7 +62,15 @@ fun ReaderLoginScreen(navController: NavHostController) {
                         TAG,
                         "ReaderLoginScreen: email is $email, and the password is $password"
                     )
-                    // TODO(login to Firebase account)
+                    loginScreenViewModel.signInWithEmailAndPassword(
+                        email,
+                        password,
+                        home = {
+                            navController.also {
+                                it.popBackStack()
+                                it.navigate(ReaderScreens.READER_HOME_SCREEN.name)
+                            }
+                        })
                 })
             } else {
                 Log.d(TAG, "ReaderLoginScreen: showing the sign up form")
@@ -66,7 +79,16 @@ fun ReaderLoginScreen(navController: NavHostController) {
                         TAG,
                         "ReaderLoginScreen: email $email and password $password for firebase account"
                     )
-                    // TODO(create Firebase account)
+                    // creating an account
+                    loginScreenViewModel.createUserWithEmailAndPassword(
+                        email,
+                        password,
+                        home = {
+                            navController.also {
+                                it.popBackStack()
+                                it.navigate(ReaderScreens.READER_HOME_SCREEN.name)
+                            }
+                        })
                 })
             }
 
@@ -178,7 +200,7 @@ fun SubmitButton(textId: String, loading: Boolean, validInput: Boolean, onClick:
     Button(
         onClick = onClick, modifier = Modifier
             .padding(3.dp)
-            .fillMaxWidth(.95f),
+            .fillMaxWidth(.97f),
         enabled = !loading && validInput,
         shape = CircleShape
     ) {

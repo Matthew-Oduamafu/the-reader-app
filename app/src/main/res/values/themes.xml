@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.Reaader" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:navigationBarColor">@color/status_bar_color</item>
     </style>
 </resources>
