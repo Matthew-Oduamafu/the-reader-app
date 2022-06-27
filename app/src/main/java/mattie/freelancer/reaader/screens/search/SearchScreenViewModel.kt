@@ -13,7 +13,6 @@ import mattie.freelancer.reaader.data.Resource
 import mattie.freelancer.reaader.model.Item
 import mattie.freelancer.reaader.repository.BookRepository
 import javax.inject.Inject
-import kotlin.math.log
 
 private const val TAG = "SearchScreenViewModel"
 
@@ -22,6 +21,7 @@ private const val TAG = "SearchScreenViewModel"
 class SearchScreenViewModel @Inject constructor(private val bookRepository: BookRepository) :
     ViewModel() {
     var list: List<Item> by mutableStateOf(listOf())
+    var isLoading: Boolean by mutableStateOf(true)
 
     init {
         loadBooks()
@@ -39,18 +39,24 @@ class SearchScreenViewModel @Inject constructor(private val bookRepository: Book
             try {
                 when (val response = bookRepository.getBooks(searchQuery)) {
                     is Resource.Error -> {
+                        isLoading = false
                         Log.e(TAG, "searchBooks: Failed getting books")
                     }
                     is Resource.Loading -> {
+                        isLoading = true
                         Log.d(TAG, "searchBooks: Data loading or loading done")
                     }
                     is Resource.Success -> {
                         list = response.data!!
+
+                        if(list.toString().isNotEmpty())
+                            isLoading = false
+
                         Log.d(TAG, "searchBooks: ${response.data}")
                     }
                 }
             } catch (e: Exception) {
-
+                isLoading = false
             }
         }
     }

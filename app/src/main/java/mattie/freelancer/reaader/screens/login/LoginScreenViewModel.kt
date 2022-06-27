@@ -1,22 +1,11 @@
 package mattie.freelancer.reaader.screens.login
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Icon
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
+import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -26,7 +15,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import mattie.freelancer.reaader.R
 import mattie.freelancer.reaader.model.MUser
 
 
@@ -133,6 +121,8 @@ class LoginScreenViewModel : ViewModel() {
                             TAG,
                             "signInWithEmailAndPassword: unrecognized user"
                         )
+
+                        is FirebaseException -> {}
                     }
                     Log.d(TAG, "SingInWithEmailAndPassword: exception occurred")
                     Log.d(TAG, "SingInWithEmailAndPassword: ${e.printStackTrace()}")

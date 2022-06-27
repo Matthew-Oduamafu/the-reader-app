@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -65,43 +66,52 @@ fun ReaderBookSearchScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                ) { searchQuery->
+                ) { searchQuery ->
                     Log.d(TAG, "ReaderBookSearchScreen: search query is $searchQuery")
-                    searchScreenViewModel.searchBooks(searchQuery=searchQuery)
+                    searchScreenViewModel.searchBooks(searchQuery = searchQuery)
                 }
 
                 Spacer(modifier = Modifier.height(13.dp))
 
-                BookList(navController = navController, searchScreenViewModel = searchScreenViewModel)
+                BookList(
+                    navController = navController,
+                    searchScreenViewModel = searchScreenViewModel
+                )
             }
         }
     }
 }
 
 @Composable
-fun BookList(navController: NavHostController, searchScreenViewModel: SearchScreenViewModel = hiltViewModel()) {
+fun BookList(
+    navController: NavHostController,
+    searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+) {
 
     val listOfBooks = searchScreenViewModel.list
-        /*
-        val listOfBooks = listOf(
-            MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
-            MBook("im", "Java Tutorial", "Matthew oduamafu", "Simplify kotlin"),
-            MBook("mm", "Python Tutorial", "Partey", "Simplify kotlin"),
-            MBook("m", "C++ Tutorial", "Anima", "Simplify kotlin"),
-            MBook("um", "C# Tutorial", "Balica Stinson", "Simplify kotlin"),
-            MBook("iom", "Objective - C Tutorial", "Denexon", "Simplify kotlin"),
-            MBook("ipm", "Android Tutorial", "Sefah Lotto", "Simplify kotlin"),
-            MBook("ium", "C Tutorial", "Kwamena Iden", "Simplify kotlin"),
-            MBook("uum", "Ruby Tutorial", "Dr. Acquah Isaac", "Simplify kotlin")
-        )
-        */
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(items = listOfBooks) { book ->
-            BookRow(book, navController = navController)
+    if (searchScreenViewModel.isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth(.95f)
+                    .padding(8.dp)
+            )
+        }
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(items = listOfBooks) { book ->
+                BookRow(book, navController = navController)
+            }
         }
     }
 }
@@ -135,9 +145,23 @@ fun BookRow(book: Item, navController: NavHostController) {
                 Text(
                     text = "Author: ${book.volumeInfo.authors}",
                     overflow = TextOverflow.Clip,
+                    fontStyle = FontStyle.Italic,
                     style = MaterialTheme.typography.caption
                 )
-                // TODO(Add more fields later)
+
+                Text(
+                    text = "Date: ${book.volumeInfo.publishedDate}",
+                    overflow = TextOverflow.Clip,
+                    fontStyle = FontStyle.Italic,
+                    style = MaterialTheme.typography.caption
+                )
+
+                Text(
+                    text = "${book.volumeInfo.categories}",
+                    overflow = TextOverflow.Clip,
+                    fontStyle = FontStyle.Italic,
+                    style = MaterialTheme.typography.caption
+                )
             }
         }
     }
