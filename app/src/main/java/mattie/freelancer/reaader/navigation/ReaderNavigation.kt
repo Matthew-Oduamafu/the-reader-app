@@ -1,6 +1,7 @@
 package mattie.freelancer.reaader.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,6 +10,7 @@ import mattie.freelancer.reaader.screens.details.BookDetailsScreen
 import mattie.freelancer.reaader.screens.home.ReaderHomeScreen
 import mattie.freelancer.reaader.screens.login.ReaderLoginScreen
 import mattie.freelancer.reaader.screens.search.ReaderBookSearchScreen
+import mattie.freelancer.reaader.screens.search.SearchScreenViewModel
 import mattie.freelancer.reaader.screens.stats.ReaderStatsScreen
 import mattie.freelancer.reaader.screens.update.BookUpdateScreen
 
@@ -39,7 +41,8 @@ fun ReaderNavigation() {
 
         // navigate to Reader Book Search screen
         composable(ReaderScreens.SEARCH_SCREEN.name) {
-            ReaderBookSearchScreen(navController = navController)
+            val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+            ReaderBookSearchScreen(navController = navController, searchScreenViewModel)
         }
 
         // navigate to Reader Stats Screen

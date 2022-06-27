@@ -27,7 +27,6 @@ import mattie.freelancer.reaader.components.ReaderAppBar
 import mattie.freelancer.reaader.components.TitleSection
 import mattie.freelancer.reaader.model.MBook
 import mattie.freelancer.reaader.navigation.ReaderScreens
-import mattie.freelancer.reaader.repository.BookRepository
 
 private const val TAG = "ReaderHomeScreen"
 

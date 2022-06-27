@@ -30,7 +30,7 @@ import coil.compose.rememberAsyncImagePainter
 import mattie.freelancer.reaader.R
 import mattie.freelancer.reaader.components.InputField
 import mattie.freelancer.reaader.components.ReaderAppBar
-import mattie.freelancer.reaader.model.MBook
+import mattie.freelancer.reaader.model.Item
 import mattie.freelancer.reaader.utils.Constants
 
 private const val TAG = "ReaderBookSearchScreen"
@@ -65,32 +65,36 @@ fun ReaderBookSearchScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                ) {
-                    Log.d(TAG, "ReaderBookSearchScreen: search query is $it")
+                ) { searchQuery->
+                    Log.d(TAG, "ReaderBookSearchScreen: search query is $searchQuery")
+                    searchScreenViewModel.searchBooks(searchQuery=searchQuery)
                 }
 
                 Spacer(modifier = Modifier.height(13.dp))
 
-                BookList(navController = navController)
+                BookList(navController = navController, searchScreenViewModel = searchScreenViewModel)
             }
         }
     }
 }
 
 @Composable
-fun BookList(navController: NavHostController) {
+fun BookList(navController: NavHostController, searchScreenViewModel: SearchScreenViewModel = hiltViewModel()) {
 
-    val listOfBooks = listOf(
-        MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
-        MBook("im", "Java Tutorial", "Matthew oduamafu", "Simplify kotlin"),
-        MBook("mm", "Python Tutorial", "Partey", "Simplify kotlin"),
-        MBook("m", "C++ Tutorial", "Anima", "Simplify kotlin"),
-        MBook("um", "C# Tutorial", "Balica Stinson", "Simplify kotlin"),
-        MBook("iom", "Objective - C Tutorial", "Denexon", "Simplify kotlin"),
-        MBook("ipm", "Android Tutorial", "Sefah Lotto", "Simplify kotlin"),
-        MBook("ium", "C Tutorial", "Kwamena Iden", "Simplify kotlin"),
-        MBook("uum", "Ruby Tutorial", "Dr. Acquah Isaac", "Simplify kotlin")
-    )
+    val listOfBooks = searchScreenViewModel.list
+        /*
+        val listOfBooks = listOf(
+            MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
+            MBook("im", "Java Tutorial", "Matthew oduamafu", "Simplify kotlin"),
+            MBook("mm", "Python Tutorial", "Partey", "Simplify kotlin"),
+            MBook("m", "C++ Tutorial", "Anima", "Simplify kotlin"),
+            MBook("um", "C# Tutorial", "Balica Stinson", "Simplify kotlin"),
+            MBook("iom", "Objective - C Tutorial", "Denexon", "Simplify kotlin"),
+            MBook("ipm", "Android Tutorial", "Sefah Lotto", "Simplify kotlin"),
+            MBook("ium", "C Tutorial", "Kwamena Iden", "Simplify kotlin"),
+            MBook("uum", "Ruby Tutorial", "Dr. Acquah Isaac", "Simplify kotlin")
+        )
+        */
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -103,7 +107,7 @@ fun BookList(navController: NavHostController) {
 }
 
 @Composable
-fun BookRow(book: MBook, navController: NavHostController) {
+fun BookRow(book: Item, navController: NavHostController) {
     Card(
         modifier = Modifier
             .clickable { }
@@ -119,7 +123,7 @@ fun BookRow(book: MBook, navController: NavHostController) {
         ) {
             val imageUrl = Constants.TEST_URL
             Image(
-                painter = rememberAsyncImagePainter(model = imageUrl),
+                painter = rememberAsyncImagePainter(model = book.volumeInfo.imageLinks.thumbnail),
                 contentDescription = stringResource(id = R.string.book_cover_image_description),
                 modifier = Modifier
                     .width(80.dp)
@@ -127,9 +131,9 @@ fun BookRow(book: MBook, navController: NavHostController) {
                     .padding(end = 4.dp)
             )
             Column {
-                Text(text = book.title.toString(), overflow = TextOverflow.Ellipsis)
+                Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)
                 Text(
-                    text = "Author: ${book.authors.toString()}",
+                    text = "Author: ${book.volumeInfo.authors}",
                     overflow = TextOverflow.Clip,
                     style = MaterialTheme.typography.caption
                 )
