@@ -2,11 +2,14 @@ package mattie.freelancer.reaader.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import mattie.freelancer.reaader.screens.ReaderSplashScreen
 import mattie.freelancer.reaader.screens.details.BookDetailsScreen
+import mattie.freelancer.reaader.screens.details.DetailsViewModel
 import mattie.freelancer.reaader.screens.home.ReaderHomeScreen
 import mattie.freelancer.reaader.screens.login.ReaderLoginScreen
 import mattie.freelancer.reaader.screens.search.ReaderBookSearchScreen
@@ -35,8 +38,17 @@ fun ReaderNavigation() {
         }
 
         // navigate to Book details screen
-        composable(ReaderScreens.DETAILS_SCREEN.name) {
-            BookDetailsScreen(navController = navController)
+        val detailName = ReaderScreens.DETAILS_SCREEN.name
+        composable(
+            "$detailName/{bookId}",
+            arguments = listOf(navArgument("bookId", builder = { type = NavType.StringType}))
+        ) {
+            val detailsViewModel = hiltViewModel<DetailsViewModel>()
+            it.arguments?.getString("bookId").let { bookId ->
+                if (bookId != null) {
+                    BookDetailsScreen(navController = navController, bookId=bookId, viewModel = detailsViewModel)
+                }
+            }
         }
 
         // navigate to Reader Book Search screen

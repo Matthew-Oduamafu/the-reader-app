@@ -32,6 +32,7 @@ import mattie.freelancer.reaader.R
 import mattie.freelancer.reaader.components.InputField
 import mattie.freelancer.reaader.components.ReaderAppBar
 import mattie.freelancer.reaader.model.Item
+import mattie.freelancer.reaader.navigation.ReaderScreens
 import mattie.freelancer.reaader.utils.Constants
 
 private const val TAG = "ReaderBookSearchScreen"
@@ -45,7 +46,6 @@ fun ReaderBookSearchScreen(
 ) {
     Log.d(TAG, "ReaderBookSearchScreen: called")
     Log.d(TAG, "ReaderBookSearchScreen: testing the viewModel")
-    searchScreenViewModel.getBooks("Android")
 
     Scaffold(
         topBar = {
@@ -120,7 +120,7 @@ fun BookList(
 fun BookRow(book: Item, navController: NavHostController) {
     Card(
         modifier = Modifier
-            .clickable { }
+            .clickable { navController.navigate(ReaderScreens.DETAILS_SCREEN.name+"/${book.id}") }
             .fillMaxWidth()
             .height(100.dp)
             .padding(3.dp),
@@ -141,9 +141,12 @@ fun BookRow(book: Item, navController: NavHostController) {
                     .padding(end = 4.dp)
             )
             Column {
+                val authorName = if(book.volumeInfo.authors.isNullOrEmpty()) "Unknown Author" else book.volumeInfo.authors.toString()
+                Log.d(TAG, "BookRow: ${book.volumeInfo.authors}")
+
                 Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)
                 Text(
-                    text = "Author: ${book.volumeInfo.authors}",
+                    text = "Author: $authorName",
                     overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
                     style = MaterialTheme.typography.caption

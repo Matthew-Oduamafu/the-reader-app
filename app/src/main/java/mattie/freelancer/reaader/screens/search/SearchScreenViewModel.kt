@@ -60,12 +60,4 @@ class SearchScreenViewModel @Inject constructor(private val bookRepository: Book
             }
         }
     }
-
-    fun getBooks(searchQuery: String) = viewModelScope.launch {
-        Log.d(TAG, "getBooks: ${bookRepository.getBooks(searchQuery)}")
-    }
-
-    fun getBookInfo(bookId: String) = viewModelScope.launch {
-        Log.d(TAG, "getBooks: ${bookRepository.getBookInfo(bookId)}")
-    }
 }
