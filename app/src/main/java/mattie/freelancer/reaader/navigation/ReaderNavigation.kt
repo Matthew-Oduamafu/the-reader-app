@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import mattie.freelancer.reaader.screens.ReaderSplashScreen
 import mattie.freelancer.reaader.screens.details.BookDetailsScreen
 import mattie.freelancer.reaader.screens.details.DetailsViewModel
+import mattie.freelancer.reaader.screens.home.HomeScreenViewModel
 import mattie.freelancer.reaader.screens.home.ReaderHomeScreen
 import mattie.freelancer.reaader.screens.login.ReaderLoginScreen
 import mattie.freelancer.reaader.screens.search.ReaderBookSearchScreen
@@ -29,7 +30,8 @@ fun ReaderNavigation() {
 
         // navigate to Home screen
         composable(ReaderScreens.READER_HOME_SCREEN.name) {
-            ReaderHomeScreen(navController = navController)
+            val viewModel: HomeScreenViewModel = hiltViewModel()
+            ReaderHomeScreen(navController = navController, viewModel)
         }
 
         // navigate to login screen
@@ -41,12 +43,16 @@ fun ReaderNavigation() {
         val detailName = ReaderScreens.DETAILS_SCREEN.name
         composable(
             "$detailName/{bookId}",
-            arguments = listOf(navArgument("bookId", builder = { type = NavType.StringType}))
+            arguments = listOf(navArgument("bookId", builder = { type = NavType.StringType }))
         ) {
             val detailsViewModel = hiltViewModel<DetailsViewModel>()
             it.arguments?.getString("bookId").let { bookId ->
                 if (bookId != null) {
-                    BookDetailsScreen(navController = navController, bookId=bookId, viewModel = detailsViewModel)
+                    BookDetailsScreen(
+                        navController = navController,
+                        bookId = bookId,
+                        viewModel = detailsViewModel
+                    )
                 }
             }
         }
@@ -63,8 +69,13 @@ fun ReaderNavigation() {
         }
 
         // navigate to Reader Book Update screen
-        composable(ReaderScreens.UPDATE_SCREEN.name) {
-            BookUpdateScreen(navController = navController)
+        val updateName = ReaderScreens.UPDATE_SCREEN.name
+        composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId"){
+            type = NavType.StringType
+        })) {navBackStackEntry->
+            navBackStackEntry.arguments?.getString("bookItemId").let {
+                BookUpdateScreen(navController = navController, bookItemId = it)
+            }
         }
     }
 }

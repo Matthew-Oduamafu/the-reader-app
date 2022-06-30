@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.auth.FirebaseAuth
+import mattie.freelancer.reaader.R
 import mattie.freelancer.reaader.model.MBook
 import mattie.freelancer.reaader.navigation.ReaderScreens
-import mattie.freelancer.reaader.utils.Constants
 
 private const val TAG = "HomeScreenComponents"
 
@@ -188,10 +189,10 @@ fun RoundedButton(
 }
 
 
-@Preview
+//@Preview
 @Composable
 fun ListCard(
-    book: MBook = MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
+    book: MBook = MBook(),
     onPressDetails: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -233,7 +234,11 @@ fun ListCard(
             ) {
                 // cover image of the book
                 Image(
-                    painter = rememberAsyncImagePainter(model = Constants.TEST_URL),
+                    painter = rememberAsyncImagePainter(
+                        model = book.photoUrl, placeholder = painterResource(
+                            id = R.drawable.book_black
+                        ), error = painterResource(id = R.drawable.book_black)
+                    ),
                     contentDescription = "Cover image of the book",
                     modifier = Modifier
                         .height(140.dp)

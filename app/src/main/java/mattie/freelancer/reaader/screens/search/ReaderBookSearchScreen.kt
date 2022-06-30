@@ -20,6 +20,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -120,7 +121,7 @@ fun BookList(
 fun BookRow(book: Item, navController: NavHostController) {
     Card(
         modifier = Modifier
-            .clickable { navController.navigate(ReaderScreens.DETAILS_SCREEN.name+"/${book.id}") }
+            .clickable { navController.navigate(ReaderScreens.DETAILS_SCREEN.name + "/${book.id}") }
             .fillMaxWidth()
             .height(100.dp)
             .padding(3.dp),
@@ -132,16 +133,23 @@ fun BookRow(book: Item, navController: NavHostController) {
             verticalAlignment = Alignment.Top
         ) {
             val imageUrl = Constants.TEST_URL
+            Log.d(TAG, "BookRow: ${book.volumeInfo.imageLinks.thumbnail}")
             Image(
-                painter = rememberAsyncImagePainter(model = book.volumeInfo.imageLinks.thumbnail),
+                painter = rememberAsyncImagePainter(
+                    model = book.volumeInfo.imageLinks.thumbnail,
+                    placeholder = painterResource(id = R.drawable.book_black),
+                    error = painterResource(id = R.drawable.book_black),
+                ),
                 contentDescription = stringResource(id = R.string.book_cover_image_description),
                 modifier = Modifier
                     .width(80.dp)
                     .fillMaxHeight()
                     .padding(end = 4.dp)
             )
+
             Column {
-                val authorName = if(book.volumeInfo.authors.isNullOrEmpty()) "Unknown Author" else book.volumeInfo.authors.toString()
+                val authorName =
+                    if (book.volumeInfo.authors.isNullOrEmpty()) "Unknown Author" else book.volumeInfo.authors.toString()
                 Log.d(TAG, "BookRow: ${book.volumeInfo.authors}")
 
                 Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)

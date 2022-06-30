@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
@@ -27,25 +28,29 @@ import mattie.freelancer.reaader.components.ReaderAppBar
 import mattie.freelancer.reaader.components.TitleSection
 import mattie.freelancer.reaader.model.MBook
 import mattie.freelancer.reaader.navigation.ReaderScreens
+import java.io.Reader
 
 private const val TAG = "ReaderHomeScreen"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ReaderHomeScreen(navController: NavHostController) {
+fun ReaderHomeScreen(
+    navController: NavHostController,
+    viewModel: HomeScreenViewModel = hiltViewModel()
+) {
     Scaffold(
         topBar = {
             ReaderAppBar(title = "A. Reader", navController = navController)
         },
         floatingActionButton = {
-            FABContent {navController.navigate(route = ReaderScreens.SEARCH_SCREEN.name)}
+            FABContent { navController.navigate(route = ReaderScreens.SEARCH_SCREEN.name) }
         }
     ) {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
             // add home content
-            HomeContent(navController = navController)
+            HomeContent(navController = navController, viewModel)
         }
     }
 }
@@ -54,14 +59,27 @@ fun ReaderHomeScreen(navController: NavHostController) {
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
 // books list row
-    ListCard()
+    ListCard()  //TODO (Change later to accept array input)
 }
 
 
 @Composable
 fun HomeContent(
-    navController: NavController
+    navController: NavController,
+    viewModel: HomeScreenViewModel
 ) {
+    var listOfBooks = emptyList<MBook>()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    if (!viewModel.data.value.data.isNullOrEmpty()) {
+        if (currentUser != null) {
+            listOfBooks = viewModel.data.value.data!!.toList().filter { mBook ->
+                mBook.userId == currentUser.uid
+            }
+        }
+        Log.d(TAG, "HomeContent: user's books $listOfBooks")
+    }
+    /*
     val listOfBooks = listOf(
         MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
         MBook("im", "Java Tutorial", "Matthew oduamafu", "Simplify kotlin"),
@@ -73,6 +91,7 @@ fun HomeContent(
         MBook("ium", "C Tutorial", "Kwamena Iden", "Simplify kotlin"),
         MBook("uum", "Ruby Tutorial", "Dr. Acquah Isaac", "Simplify kotlin")
     )
+    */
 
 
     // get current user name
@@ -131,6 +150,7 @@ fun BookListArea(listOfBooks: List<MBook>, navController: NavController) {
     HorizontalScrollableComponent(listOfBooks) {
         //TODO(on card clicked navigate to details screen)
         Log.d(TAG, "BookListArea: the item clicked = $it")
+        navController.navigate(ReaderScreens.UPDATE_SCREEN.name+"/$it")
     }
 }
 
