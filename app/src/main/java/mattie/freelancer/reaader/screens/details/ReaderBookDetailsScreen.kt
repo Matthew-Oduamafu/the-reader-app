@@ -179,12 +179,12 @@ fun ShowBookInfo(bookInfo: Resource<Item>, navController: NavHostController) {
                     authors = bookData.authors.toString(),
                     description = HtmlCompat.fromHtml(bookData.description, FROM_HTML_MODE_LEGACY)
                         .toString(),
-                    categories = bookData.categories?.toString(),
+                    categories = bookData.categories.toString(),
                     notes = "",
                     photoUrl = bookData.imageLinks.thumbnail,
                     publishedDate = bookData.publishedDate,
                     pageCount = bookData.pageCount.toString(),
-                    rating = 0.0.toString(),
+                    rating = 0,
                     googleBookId = googleBookId,
                     userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 )
@@ -209,14 +209,15 @@ fun saveToFireBase(book: MBook, navController: NavHostController, context: Conte
         Log.d(TAG, "saveToFireBase: saving book:: $book")
         dbCollections.add(book).addOnSuccessListener { documentRef ->
             val docId = documentRef.id
-            dbCollections.document(docId).update(hashMapOf<String, Any>("id" to docId)).addOnCompleteListener { task->
-                if(task.isSuccessful){
-                    Toast.makeText(context, "Book Saved!", Toast.LENGTH_SHORT).show()
-                    navController.popBackStack()
-                }else{
-                    Toast.makeText(context, "Saving Failed!", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener {
+            dbCollections.document(docId).update(hashMapOf<String, Any>("id" to docId))
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(context, "Book Saved!", Toast.LENGTH_SHORT).show()
+                        navController.popBackStack()
+                    } else {
+                        Toast.makeText(context, "Saving Failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener {
                 Toast.makeText(context, "Saving Failed!", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "SaveToFireBase: failed to save ${it.printStackTrace()}")
             }

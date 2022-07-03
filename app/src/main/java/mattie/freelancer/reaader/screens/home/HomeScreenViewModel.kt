@@ -15,9 +15,13 @@ import javax.inject.Inject
 private const val TAG = "HomeScreenViewModel"
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(private val repository: FireRepository): ViewModel() {
-    val data: MutableState<DataOrException<List<MBook>, Boolean, Exception>> = mutableStateOf(DataOrException(
-        listOf(), true, Exception("")))
+class HomeScreenViewModel @Inject constructor(private val repository: FireRepository) :
+    ViewModel() {
+    val data: MutableState<DataOrException<List<MBook>, Boolean, Exception>> = mutableStateOf(
+        DataOrException(
+            listOf(), true, Exception("")
+        )
+    )
 
     init {
         Log.d(TAG, "init block: grabbing all books")
@@ -26,9 +30,12 @@ class HomeScreenViewModel @Inject constructor(private val repository: FireReposi
 
     private fun getAllBooksFromDatabase() {
         viewModelScope.launch {
-            data.value.loading = true
             data.value = repository.getALlBooksFromDatabase()
-            if(!data.value.data.isNullOrEmpty()){
+            data.value.loading = false
+            if (!data.value.data.isNullOrEmpty()) {
+                Log.d(TAG, "getAllBooksFromDatabase: data retrieved")
+                Log.d(TAG, "getAllBooksFromDatabase: hence setting loading to false")
+
                 data.value.loading = false
                 Log.d(TAG, "getAllBooksFromDatabase: data loaded ${data.value.data.toString()}")
             }

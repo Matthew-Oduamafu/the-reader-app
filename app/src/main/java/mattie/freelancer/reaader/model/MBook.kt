@@ -1,8 +1,8 @@
 package mattie.freelancer.reaader.model
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
-import java.sql.Timestamp
 
 data class MBook(
     @Exclude  // here we add the exclude annotation to prevent fireStore from adding this field
@@ -18,7 +18,7 @@ data class MBook(
     @get:PropertyName("published_date")  // here we adding name format for fireStore to work fine
     @set:PropertyName("published_date")  // fireStore fields can be saved in camel case
     var publishedDate: String? = null,
-    var rating: String? = null,
+    var rating: Int? = null,
     var description: String? = null,
 
     @get:PropertyName("page_count")

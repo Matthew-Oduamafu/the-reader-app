@@ -11,4 +11,5 @@
     <string name="search_screen_title">Search Books</string>
     <string name="search_hint">Search</string>
     <string name="book_cover_image_description">Book cover Image</string>
+    <string name="delete_alert_lbl">Do you want delete this book?\nThis action is note reversible</string>
 </resources>

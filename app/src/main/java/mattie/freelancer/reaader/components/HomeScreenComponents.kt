@@ -9,6 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -159,7 +160,7 @@ fun BookRating(score: Double) {
 }
 
 
-@Preview
+//@Preview
 @Composable
 fun RoundedButton(
     label: String = "Reading",
@@ -261,7 +262,7 @@ fun ListCard(
                         modifier = Modifier.padding(bottom = 1.dp)
                     )
 
-                    BookRating(score = 4.5)
+                    BookRating(score = book.rating?.toDouble() ?: 0.0)
                 }
             }
 
@@ -281,11 +282,18 @@ fun ListCard(
                 style = MaterialTheme.typography.caption
             )
         }
+
+
+        val isStartedReading = remember { mutableStateOf(false) }
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom
         ) {
-            RoundedButton(label = "Reading", radius = 70)
+            isStartedReading.value = book.startedReading != null
+            RoundedButton(
+                label = if (isStartedReading.value) "Reading" else "Not Yet",
+                radius = 70
+            )
         }
     }
 }

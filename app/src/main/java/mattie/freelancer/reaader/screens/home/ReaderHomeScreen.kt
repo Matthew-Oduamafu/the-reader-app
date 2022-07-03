@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +30,6 @@ import mattie.freelancer.reaader.components.ReaderAppBar
 import mattie.freelancer.reaader.components.TitleSection
 import mattie.freelancer.reaader.model.MBook
 import mattie.freelancer.reaader.navigation.ReaderScreens
-import java.io.Reader
 
 private const val TAG = "ReaderHomeScreen"
 
@@ -59,7 +60,15 @@ fun ReaderHomeScreen(
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
 // books list row
-    ListCard()  //TODO (Change later to accept array input)
+
+    val booksReading = books.filter { mBook: MBook ->
+        mBook.startedReading != null && mBook.finishedReading == null
+    }
+    HorizontalScrollableComponent(listOfBooks = booksReading, onCardPressed = {
+        Log.d(TAG, "ReadingRightNowArea: called with $it")
+        navController.navigate(ReaderScreens.UPDATE_SCREEN.name + "/$it")
+    })
+
 }
 
 
@@ -79,19 +88,6 @@ fun HomeContent(
         }
         Log.d(TAG, "HomeContent: user's books $listOfBooks")
     }
-    /*
-    val listOfBooks = listOf(
-        MBook("imm", "Kotlin Tutorial", "Mattie", "Simplify kotlin"),
-        MBook("im", "Java Tutorial", "Matthew oduamafu", "Simplify kotlin"),
-        MBook("mm", "Python Tutorial", "Partey", "Simplify kotlin"),
-        MBook("m", "C++ Tutorial", "Anima", "Simplify kotlin"),
-        MBook("um", "C# Tutorial", "Balica Stinson", "Simplify kotlin"),
-        MBook("iom", "Objective - C Tutorial", "Denexon", "Simplify kotlin"),
-        MBook("ipm", "Android Tutorial", "Sefah Lotto", "Simplify kotlin"),
-        MBook("ium", "C Tutorial", "Kwamena Iden", "Simplify kotlin"),
-        MBook("uum", "Ruby Tutorial", "Dr. Acquah Isaac", "Simplify kotlin")
-    )
-    */
 
 
     // get current user name
@@ -136,7 +132,7 @@ fun HomeContent(
             }
         }
         // row of books in reading process
-        ReadingRightNowArea(books = listOf(), navController = navController)
+        ReadingRightNowArea(books = listOfBooks, navController = navController)
 
         // reading list
         TitleSection(label = "Reading List")
@@ -147,15 +143,23 @@ fun HomeContent(
 
 @Composable
 fun BookListArea(listOfBooks: List<MBook>, navController: NavController) {
-    HorizontalScrollableComponent(listOfBooks) {
-        //TODO(on card clicked navigate to details screen)
+
+    val addedBooks = listOfBooks.filter { mBook: MBook ->
+        mBook.startedReading == null && mBook.finishedReading == null
+    }
+
+    HorizontalScrollableComponent(addedBooks) {
         Log.d(TAG, "BookListArea: the item clicked = $it")
-        navController.navigate(ReaderScreens.UPDATE_SCREEN.name+"/$it")
+        navController.navigate(ReaderScreens.UPDATE_SCREEN.name + "/$it")
     }
 }
 
 @Composable
-fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPressed: (String) -> Unit) {
+fun HorizontalScrollableComponent(
+    listOfBooks: List<MBook>,
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+    onCardPressed: (String) -> Unit
+) {
     val scrollState = rememberScrollState()
     Row(
         modifier = Modifier
@@ -163,9 +167,35 @@ fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPressed: (Stri
             .heightIn(200.dp)
             .horizontalScroll(scrollState)
     ) {
-        for (book in listOfBooks) {
-            ListCard(book = book) {
-                onCardPressed(it)
+        if (viewModel.data.value.loading == true) {
+            Column(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(color = Color.Green.copy(0.55f))
+            }
+        } else {
+            if (listOfBooks.isEmpty()) {
+                Surface(modifier = Modifier.padding(23.dp)) {
+                    Text(
+                        text = "No Books Found. Add a book",
+                        style = TextStyle(
+                            color = Color.Red.copy(0.4f),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
+                        )
+                    )
+                }
+            } else {
+
+                for (book in listOfBooks) {
+                    ListCard(book = book) {
+                        onCardPressed(book.googleBookId.toString())
+                    }
+                }
             }
         }
     }

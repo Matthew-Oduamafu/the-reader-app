@@ -34,7 +34,6 @@ import mattie.freelancer.reaader.components.InputField
 import mattie.freelancer.reaader.components.ReaderAppBar
 import mattie.freelancer.reaader.model.Item
 import mattie.freelancer.reaader.navigation.ReaderScreens
-import mattie.freelancer.reaader.utils.Constants
 
 private const val TAG = "ReaderBookSearchScreen"
 
@@ -56,7 +55,10 @@ fun ReaderBookSearchScreen(
                 navController = navController,
                 showProfile = false
             ) {
-                navController.popBackStack()
+                navController.also {
+                    it.popBackStack()
+                    it.navigate(ReaderScreens.READER_HOME_SCREEN.name)
+                }
             }
         }
     ) {
@@ -132,7 +134,6 @@ fun BookRow(book: Item, navController: NavHostController) {
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.Top
         ) {
-            val imageUrl = Constants.TEST_URL
             Log.d(TAG, "BookRow: ${book.volumeInfo.imageLinks.thumbnail}")
             Image(
                 painter = rememberAsyncImagePainter(
@@ -149,7 +150,7 @@ fun BookRow(book: Item, navController: NavHostController) {
 
             Column {
                 val authorName =
-                    if (book.volumeInfo.authors.isNullOrEmpty()) "Unknown Author" else book.volumeInfo.authors.toString()
+                    if (book.volumeInfo.authors.isEmpty()) "Unknown Author" else book.volumeInfo.authors.toString()
                 Log.d(TAG, "BookRow: ${book.volumeInfo.authors}")
 
                 Text(text = book.volumeInfo.title, overflow = TextOverflow.Ellipsis)

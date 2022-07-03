@@ -49,7 +49,7 @@ class SearchScreenViewModel @Inject constructor(private val bookRepository: Book
                     is Resource.Success -> {
                         list = response.data!!
 
-                        if(list.toString().isNotEmpty())
+                        if (list.toString().isNotEmpty())
                             isLoading = false
 
                         Log.d(TAG, "searchBooks: ${response.data}")

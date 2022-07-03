@@ -74,7 +74,12 @@ fun InputField(
         singleLine = isSingleLine,
         textStyle = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground),
         enabled = enabled,
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences,keyboardType = keyboardType, imeAction = imeAction, autoCorrect = true),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            keyboardType = keyboardType,
+            imeAction = imeAction,
+            autoCorrect = true
+        ),
         keyboardActions = onAction
     )
 }

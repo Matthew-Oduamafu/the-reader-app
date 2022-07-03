@@ -140,7 +140,7 @@ fun UserForm(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val valid = remember(email.value, password.value) {
-        email.value.trim().isNotEmpty() && password.value.trim().isNotEmpty()
+        email.value.trim().isNotEmpty() && password.value.trim().length >= 6
     }
 
     val modifier = Modifier

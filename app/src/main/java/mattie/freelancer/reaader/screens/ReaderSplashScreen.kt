@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import mattie.freelancer.reaader.components.ReaderLogo
 import mattie.freelancer.reaader.navigation.ReaderScreens
@@ -50,7 +51,7 @@ fun ReaderSplashScreen(navController: NavHostController) {
             Log.d(TAG, "ReaderSplashScreen: splash screen pop out of stack")
             it.navigate(ReaderScreens.LOGIN_SCREEN.name)
         }
-        /*
+
         if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
             Log.d(TAG, "ReaderSplashScreen: send user to login screen")
             navController.also {
@@ -66,7 +67,7 @@ fun ReaderSplashScreen(navController: NavHostController) {
                 it.navigate(ReaderScreens.READER_HOME_SCREEN.name)
             }
         }
-        */
+
     }
     )
 

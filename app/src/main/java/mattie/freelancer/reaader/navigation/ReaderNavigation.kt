@@ -1,5 +1,7 @@
 package mattie.freelancer.reaader.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -18,6 +20,7 @@ import mattie.freelancer.reaader.screens.search.SearchScreenViewModel
 import mattie.freelancer.reaader.screens.stats.ReaderStatsScreen
 import mattie.freelancer.reaader.screens.update.BookUpdateScreen
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun ReaderNavigation() {
     val navController = rememberNavController()
@@ -65,14 +68,15 @@ fun ReaderNavigation() {
 
         // navigate to Reader Stats Screen
         composable(ReaderScreens.READER_STATS_SCREEN.name) {
-            ReaderStatsScreen(navController = navController)
+            val homeViewModel = hiltViewModel<HomeScreenViewModel>()
+            ReaderStatsScreen(navController = navController, viewModel = homeViewModel)
         }
 
         // navigate to Reader Book Update screen
         val updateName = ReaderScreens.UPDATE_SCREEN.name
-        composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId"){
+        composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId") {
             type = NavType.StringType
-        })) {navBackStackEntry->
+        })) { navBackStackEntry ->
             navBackStackEntry.arguments?.getString("bookItemId").let {
                 BookUpdateScreen(navController = navController, bookItemId = it)
             }

@@ -34,7 +34,7 @@ class LoginScreenViewModel : ViewModel() {
         viewModelScope.launch {
             run {
                 if (_loading.value == false) {
-                    _loading.value == true
+                    _loading.value = true
                     try {
                         auth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->

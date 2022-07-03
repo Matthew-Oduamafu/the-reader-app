@@ -1,9 +1,11 @@
 package mattie.freelancer.reaader
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ private const val TAG = "MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
         super.onCreate(savedInstanceState)
@@ -48,6 +51,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun ReaderApp() {
     // A surface container using the 'background' color from the theme

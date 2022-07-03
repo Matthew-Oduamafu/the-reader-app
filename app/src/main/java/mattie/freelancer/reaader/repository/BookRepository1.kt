@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 private const val TAG = "BookRepository"
 
-class BookRepository1 @Inject constructor(private val booksApi: BooksApi){
+class BookRepository1 @Inject constructor(private val booksApi: BooksApi) {
     private val dataOrException = DataOrException<List<Item>, Boolean, Exception>()
     private val bookInfoDataOrException = DataOrException<Item, Boolean, Exception>()
 
@@ -20,7 +20,7 @@ class BookRepository1 @Inject constructor(private val booksApi: BooksApi){
 
             if (dataOrException.data!!.isNotEmpty()) dataOrException.loading = false
 
-        }catch (e: Exception){
+        } catch (e: Exception) {
             dataOrException.e = e
         }
         return dataOrException
@@ -32,9 +32,11 @@ class BookRepository1 @Inject constructor(private val booksApi: BooksApi){
             bookInfoDataOrException.loading = true
             bookInfoDataOrException.data = booksApi.bookInfo(bookId = bookId)
 
-            if (bookInfoDataOrException.data.toString().isNotEmpty()) bookInfoDataOrException.loading = false
+            if (bookInfoDataOrException.data.toString()
+                    .isNotEmpty()
+            ) bookInfoDataOrException.loading = false
 
-        }catch (e: Exception){
+        } catch (e: Exception) {
             bookInfoDataOrException.e = e
         }
         return bookInfoDataOrException
